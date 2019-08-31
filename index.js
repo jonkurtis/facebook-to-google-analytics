@@ -6,18 +6,18 @@ const adAccountId = `act_${process.env.AD_ACCOUNT_ID}`;
 const accessToken = process.env.ACCESS_TOKEN;
 const apiEndpoint = 'https://graph.facebook.com/v4.0';
 
-const api = `${apiEndpoint}/${adAccountId}/insights`
+const api = `${apiEndpoint}/${adAccountId}/insights`;
 
-// axios.get(`${api}?access_token=${accessToken}&fields=impressions&date_preset=last_month`)
-//   .then(response => {
-//     console.log(JSON.stringify(response.data.data[0]));
-//   }).catch(error => {
-//     console.log(error);
-//   })
+const params = {
+  level: 'campaign',
+  fields: 'campaign_name,impressions,spend,inline_link_clicks',
+  date_preset: 'last_month'
+};
 
 async function getData () {
-  const res = await axios.get(`${api}?access_token=${accessToken}&fields=impressions,spend,inline_link_clicks&date_preset=last_month`)
-  console.log(JSON.stringify(res.data.data[0]));
+  const {level, fields, date_preset} = params;
+  const res = await axios.get(`${api}?access_token=${accessToken}&level=${level}&fields=${fields}&date_preset=${date_preset}`)
+  console.log(JSON.stringify(res.data.data));
 }
 
 getData().catch(err => console.log(err));
